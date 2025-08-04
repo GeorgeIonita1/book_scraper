@@ -13,13 +13,13 @@
 
 ### Build and start the container:
     
-  docker compose up -d
-  
-  docker exec -it book_scraper_ct bash
+    docker compose up -d
+    
+    docker exec -it book_scraper_ct bash
 
 ### Generate
 
-  scrapy crawl books -O books.json
+    scrapy crawl books -O books.json
 
 ### View the results:
 

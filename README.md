@@ -11,15 +11,16 @@
 
 
 
-**Build and start the container:**
+### Build and start the container:
     
-    docker compose up -d
-   
-    docker exec -it book_scraper_ct bash
+  docker compose up -d
+  
+  docker exec -it book_scraper_ct bash
 
-  ** Generate **
+### Generate
 
-    scrapy crawl books -O books.json
+  scrapy crawl books -O books.json
 
-**View the results:**
-    Once the crawl is complete, you can find the `books.json` file in your local project directory.
+### View the results:
+
+  Once the crawl is complete, you can find the `books.json` file in your local project directory.

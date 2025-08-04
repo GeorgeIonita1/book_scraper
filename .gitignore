@@ -1,0 +1,12 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+
+# Scrapy project files
+.scrapy/
+
+# Log files
+*.log
+
+# Generated output files
+books.json

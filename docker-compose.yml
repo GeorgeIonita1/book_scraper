@@ -2,12 +2,16 @@ services:
   book_scraper:
     build:
       context: .
-    
+
     container_name: book_scraper_ct
-    
+
     volumes:
-      - '.:/app'
-    
+      - ".:/app"
+
     working_dir: /app
+
+    command: bash
+
+    stdin_open: true
     
-    command: tail -f /dev/null
+    tty: true

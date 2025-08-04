@@ -4,7 +4,7 @@ import re
 class BooksSpider(scrapy.Spider):
     name = "books2"
     allowed_domains = ["books.toscrape.com"]
-    start_urls = ["https://books.toscrape.com/catalogue/page-2.html"]
+    start_urls = ["https://books.toscrape.com/index.html"]
 
     BOOK_URLS = "//article[contains(@class, 'product_pod')]//a/@href"
     NEXT_PAGE = "//ul[contains(@class, 'pager')]/li[contains(@class, 'next')]//a/@href"
@@ -23,7 +23,7 @@ class BooksSpider(scrapy.Spider):
 
         next_page_url = response.xpath(self.NEXT_PAGE).get()
         
-        if next_page_url and page_number < 3:
+        if next_page_url:
             yield response.follow(next_page_url, self.parse)
 
     def parse_book(self, response):

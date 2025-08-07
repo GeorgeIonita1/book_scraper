@@ -54,7 +54,7 @@ class BooksSpider(scrapy.Spider):
         
         # I'm just limiting the number of iterations for testing
         # Please remove "and page_number < 2" to scrape everything to the last page
-        if next_page_url and page_number < 2:
+        if next_page_url and page_number < 1:
             yield response.follow(next_page_url, self.parse)
 
     def parse_book(self, response):
@@ -81,11 +81,12 @@ class BooksSpider(scrapy.Spider):
 
         page_number = response.meta.get('page_number')
         stock_status, stock_quantity = self._parse_stock(response)
+        price_stripped = self._parse_price(response, PRICE)
         
         yield {
             "page_number": page_number,
             "title": self._extract_with_xpath(response, TITLE),
-            "price": self._extract_with_xpath(response, PRICE),
+            "price": price_stripped,
             "stock_status": stock_status,
             "stock_quantity": stock_quantity,
             "upc": self._extract_with_xpath(response, UPC),
@@ -122,3 +123,8 @@ class BooksSpider(scrapy.Spider):
                 stock_quantity = int(quantity_match.group(1))
         
         return stock_status, stock_quantity
+    
+    def _parse_price(self, response, price):
+        # Remove the currency from the raw price string and convert to float
+        raw_price = self._extract_with_xpath(response, price)
+        return float(raw_price.replace('£', '')) if raw_price else None

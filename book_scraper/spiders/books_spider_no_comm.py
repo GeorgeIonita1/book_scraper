@@ -35,11 +35,12 @@ class BooksSpider(scrapy.Spider):
 
         page_number = response.meta.get('page_number')
         stock_status, stock_quantity = self._parse_stock(response)
+        price_stripped = self._parse_price(response, PRICE)
         
         yield {
             "page_number": page_number,
             "title": self._extract_with_xpath(response, TITLE),
-            "price": self._extract_with_xpath(response, PRICE),
+            "price": price_stripped,
             "stock_status": stock_status,
             "stock_quantity": stock_quantity,
             "upc": self._extract_with_xpath(response, UPC),
@@ -69,3 +70,7 @@ class BooksSpider(scrapy.Spider):
                 stock_quantity = int(quantity_match.group(1))
         
         return stock_status, stock_quantity
+    
+    def _parse_price(self, response, price):
+        raw_price = self._extract_with_xpath(response, price)
+        return float(raw_price.replace('£', '')) if raw_price else None

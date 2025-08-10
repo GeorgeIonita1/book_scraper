@@ -9,7 +9,10 @@ class BooksSpider(scrapy.Spider):
     start_urls = ["https://books.toscrape.com/catalogue/page-3.html"]
 
     def parse(self, response):
-        book_links = response.xpath("//article[contains(@class, 'product_pod')]//a/@href")
+        # response.followall() automatically calls .getall()
+        # But here i just need the links strings, not the Select object
+        # So it makes sense to be more explicit
+        book_links = response.xpath("//article[contains(@class, 'product_pod')]//a/@href").getall()
         current_page_number = self.extract_current_page_number(response)
 
         yield from response.follow_all(
@@ -38,7 +41,7 @@ class BooksSpider(scrapy.Spider):
         l.add_xpath("category", "//ul[contains(@class, 'breadcrumb')]/li[last()-1]//a/text()")
         l.add_xpath("description", "//div[@id='product_description']/following-sibling::p/text()")
 
-        return l.load_item()
+        yield l.load_item()
     
     def extract_current_page_number(self, response):
         CURRENT_PAGE = "//ul[contains(@class, 'pager')]/li[contains(@class, 'current')]/text()"

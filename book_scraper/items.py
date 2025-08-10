@@ -11,9 +11,6 @@ def parse_stock_qty(value):
     return int(match.group(1)) if match else 0
 
 class BookScraperItem(scrapy.Item):
-    # For some reason, this is not correctly applied?
-    default_output_processor = TakeFirst()
-
     page_number = scrapy.Field(output_processor=TakeFirst())
     title = scrapy.Field(output_processor=TakeFirst())
     price = scrapy.Field(
